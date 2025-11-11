@@ -51,3 +51,7 @@ jest-test-results.json
 # Readme.md
 README.md
 doc.md
+
+#prettier
+.prettierrc
+.prettierignore
