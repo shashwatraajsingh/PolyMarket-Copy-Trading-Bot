@@ -5,6 +5,10 @@
 Add these lines to your `.env` file:
 
 ```bash
+# Core Connectivity
+RPC_URL = https://polygon-rpc.com       # REQUIRED. Replace with a reliable Polygon RPC endpoint
+USDC_CONTRACT_ADDRESS = 0x...           # REQUIRED. Polygon USDC contract for balance checks
+
 # Risk Management Settings
 MINIMUM_USDC_THRESHOLD = 10          # Skip trades worth less than $10
 MAX_POSITION_LIMIT = 20              # Max 20% of portfolio per market
