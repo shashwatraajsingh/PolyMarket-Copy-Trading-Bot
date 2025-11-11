@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 import { ENV } from './env';
 
-const uri = ENV.MONGO_URI || 'mongodb://localhost:27017/polymarket_copytrading';
+const databaseUri = ENV.MONGO_URI || 'mongodb://localhost:27017/polymarket_copytrading';
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(uri);
-        console.log('MongoDB connected');
+        await mongoose.connect(databaseUri);
+        console.log(`Database connection established`);
     } catch (error) {
-        console.error('MongoDB connection error:', error);
+        console.error(`Database connection failed:`, error);
         process.exit(1);
     }
 };

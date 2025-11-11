@@ -38,4 +38,7 @@ export const ENV = {
     MONGO_URI: process.env.MONGO_URI as string,
     RPC_URL: process.env.RPC_URL as string,
     USDC_CONTRACT_ADDRESS: process.env.USDC_CONTRACT_ADDRESS as string,
+    MINIMUM_USDC_THRESHOLD: parseFloat(process.env.MINIMUM_USDC_THRESHOLD || '10'),
+    MAX_POSITION_LIMIT: parseFloat(process.env.MAX_POSITION_LIMIT || '20'),
+    STOP_LOSS_PRICE: parseFloat(process.env.STOP_LOSS_PRICE || '0.50'),
 };

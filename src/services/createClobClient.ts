@@ -11,27 +11,14 @@ const createClobClient = async (): Promise<ClobClient> => {
     const chainId = 137;
     const host = CLOB_HTTP_URL as string;
     const wallet = new ethers.Wallet(PRIVATE_KEY as string);
-    let clobClient = new ClobClient(
-        host,
-        chainId,
-        wallet,
-        undefined,
-        SignatureType.POLY_PROXY,
-        PROXY_WALLET as string
-    );
-
+    
     const originalConsoleError = console.error;
     console.error = function () {};
-    let creds = await clobClient.createApiKey();
+    const creds = await new ClobClient(host, chainId, wallet).createOrDeriveApiKey();
     console.error = originalConsoleError;
-    if (creds.key) {
-        console.log('API Key created', creds);
-    } else {
-        creds = await clobClient.deriveApiKey();
-        console.log('API Key derived', creds);
-    }
+    console.log('API Key created/derived', creds);
 
-    clobClient = new ClobClient(
+    const clobClient = new ClobClient(
         host,
         chainId,
         wallet,

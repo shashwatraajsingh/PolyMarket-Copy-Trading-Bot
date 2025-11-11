@@ -1,61 +1,82 @@
 # Polymarket Copy Trading Bot
 
-## Introduction
-This project is a Polymarket Copy Trading Bot that allows users to automatically copy trades from a selected trader on Polymarket.
+## What this bot does
+- **Copy trades** from another wallet on Polymarket.
+- **Place the same orders** for you with your proxy wallet.
+- **Watch the trader all the time** so you do not miss new moves.
+- **Keep safe rules** like stop loss, position limit, and minimum trade size.
+- **Write activity reports** to JSON log files.
 
-## Features
-- **Automated Trading**: Automatically copy trades from a selected trader.
-- **Real-time Monitoring**: Continuously monitor the selected trader's activity.
-- **Customizable Settings**: Configure trading parameters and risk management.
+## What you need first
+- Node.js 18+ and npm.
+- Docker (if you want local MongoDB) or access to MongoDB Atlas.
+- A Polymarket wallet with USDC to trade.
+- Your target wallet address that you want to copy.
 
-## Installation
-1. Install latest version of Node.js and npm
-2. Navigate to the project directory:
-    ```bash
-    cd polymarket_copy_trading_bot
-    ```
-3. Create `.env` file:
-    ```bash
-    touch .env
-    ```
-4. Configure env variables:
-    ```typescript
-    USER_ADDRESS = 'Selected account wallet address to copy'
+## Install step by step
+1. **Clone or download** this project.
+2. **Move into the folder**:
+   ```bash
+   cd polymarket_copy_trading_bot
+   ```
+3. **Install packages**:
+   ```bash
+   npm install
+   ```
+4. **Make a `.env` file** (copy from `CONFIG_GUIDE.md` if needed).
+5. **Fill the `.env` file** with your own values. See the next section.
+6. **Build the code**:
+   ```bash
+   npm run build
+   ```
+7. **Start the bot**:
+   ```bash
+   npm run start
+   ```
 
-    PROXY_WALLET = 'Your Polymarket account address'
-    PRIVATE_KEY = 'My wallet private key'
+## Important settings in `.env`
+```
+USER_ADDRESS = address you copy
+PROXY_WALLET = your trading wallet
+PRIVATE_KEY = private key for proxy wallet
+CLOB_HTTP_URL = https://clob.polymarket.com/
+CLOB_WS_URL = wss://ws-subscriptions-clob.polymarket.com/ws
+FETCH_INTERVAL = 1              # seconds between checks
+TOO_OLD_TIMESTAMP = 1           # ignore trades older than 1 hour
+RETRY_LIMIT = 3                 # tries when posting an order
+MONGO_URI = mongodb://localhost:27017/polymarket_copytrading
+RPC_URL = your Polygon RPC URL
+USDC_CONTRACT_ADDRESS = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174
+MINIMUM_USDC_THRESHOLD = 10     # skip trades smaller than $10
+MAX_POSITION_LIMIT = 20         # never hold more than 20% in one market
+STOP_LOSS_PRICE = 0.50          # sell if price drops below $0.50
+```
 
-    CLOB_HTTP_URL = 'https://clob.polymarket.com/'
-    CLOB_WS_URL = 'wss://ws-subscriptions-clob.polymarket.com/ws'
+## What the services do
+- **tradeMonitor**: checks the target wallet every few seconds.
+- **tradeExecutor**: copies trades to your wallet with safety checks.
+- **autoRedeemer**: every 2 hours it redeems settled positions.
+- **stopLossMonitor**: looks for prices under the stop-loss price and sells.
+- **monitoringService**: saves stats to `logs/monitoring.json` and prints a report every 5 minutes.
 
-    FETCH_INTERVAL = 1      // default is 1 second
-    TOO_OLD_TIMESTAMP = 1   // default is 1 hour
-    RETRY_LIMIT = 3         // default is 3 times
+## Logs and reports
+- Real-time stats in `logs/monitoring.json`.
+- Trade history (last 24h) in `logs/trade_logs.json`.
+- Console shows summaries like:
+  ```
+  📊 ===== MONITORING STATS =====
+  📈 Trades detected: 12
+  📈 Trades executed: 11 (91.7%)
+  �� Uptime: 2h 14m | Memory: 140MB | CPU: 2%
+  ```
 
-    MONGO_URI = 'mongodb+srv://polymarket_copytrading_bot:V5ufvi9ra1dsOA9M@cluster0.j1flc.mongodb.net/polymarket_copytrading'
+## Helpful tips
+- If Polymarket is blocked in your region, use a VPN or set `HTTPS_PROXY` in `.env`.
+- Keep your private key safe. Do not share the `.env` file.
+- Start with small amounts to test the bot behavior.
+- Read `CONFIG_GUIDE.md` and `FEATURES_SUMMARY.md` for more details.
 
-    RPC_URL = 'https://polygon-mainnet.infura.io/v3/90ee27dc8b934739ba9a55a075229744'
+Enjoy automated copy trading! 
 
-    USDC_CONTRACT_ADDRESS = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
-    ```
-3. Install the required dependencies:
-    ```bash
-    npm install
-    ```
-5. Build the project:
-    ```bash
-    npm run build
-    ```
-6. Run BOT:
-    ```bash
-    npm run start
-    ```
-7. ⚠ Choose reasonable location for the bot(Many users faced this problem, read this carefully before setting up the bot):
-
-   For users facing IP address-related access issues with Polymarket due to geographic restrictions, I recommend using [tradingvps.io](https://app.tradingvps.io/link.php?id=11) with the Germany location. This VPS service offers ultra-low latency and is physically close to Polymarket’s servers, ensuring faster response times and a smoother trading experience. It is specifically optimized for traders and easy to set up, making it an excellent choice for both beginners and experienced users looking to avoid IP-based blocks.
- 
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request. And if you are interested in this project, please consider giving it a star✨.
-
-## Contact
-For updated version or any questions, please contact me at [Telegram](https://t.me/trust4120).
+Built by t.me/scionofindra
+feel free to contribute in my wallet
