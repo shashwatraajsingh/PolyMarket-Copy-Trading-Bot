@@ -52,6 +52,6 @@ jest-test-results.json
 README.md
 doc.md
 
-#prettier
+# Prettier config
 .prettierrc
 .prettierignore
